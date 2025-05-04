@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-&vju*0wv!ul&0=(3())wf=n!&mgn%mj544f2$r2r024(0)js8*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'db',
+    'corsheaders',
     'rest_framework'
 ]
 
@@ -50,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
+
 ]
 
 ROOT_URLCONF = 'cs_lms_api.urls'

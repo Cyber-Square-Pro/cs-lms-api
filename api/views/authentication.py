@@ -29,23 +29,26 @@ def login(request):
 
     try:
         user_type = request.data.get('userType')
-        username = request.data.get('userName')
+        username = request.data.get('email')
         password = request.data.get('password')
-
+        print(request.data)
         if user_type == "admin":
             record = Admin.objects.filter(
                 user_name=username)
             print(record)
             if record.exists():
-                payload = {
-                    'id': 123,
-                    'username':  record[0].user_name,
-                    'name': record[0].name,
-                }
+                if check_password(password, record[0].password):
+                    payload = {
+                        'id': record[0].id,
+                        'username':  record[0].user_name,
+                        'name':  record[0].name,
+                    }
 
-                token = jwt.encode(
-                    payload, settings.SECRET_KEY, algorithm='HS256')
-                return Response({'statusCode': 200, 'message': 'Login successful', 'token': token}) 
+                    token = jwt.encode(
+                        payload, settings.SECRET_KEY, algorithm='HS256')
+                    return Response({'statusCode': 200, 'message': 'Login successful', 'token': token})
+                 
+                return Response({'statusCode': 409, 'message': 'Password Incorrect',}) 
             else:
                 return Response({'statusCode': 404, 'message': 'User not found'})
 
